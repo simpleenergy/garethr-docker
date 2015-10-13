@@ -40,6 +40,7 @@ define docker::run(
   $image,
   $command = undef,
   $memory_limit = '0b',
+  $cpu_shares = '0',
   $cpuset = [],
   $ports = [],
   $labels = [],
@@ -79,6 +80,7 @@ define docker::run(
   validate_re($image, '^[\S]*$')
   validate_re($title, '^[\S]*$')
   validate_re($memory_limit, '^[\d]*(b|k|m|g)$')
+  validate_re($cpu_shares, '^[\d]*$')
   if $restart {
     validate_re($restart, '^(no|always)|^on-failure:[\d]+$')
   }
@@ -123,6 +125,7 @@ define docker::run(
     links           => any2array($links),
     lxc_conf        => any2array($lxc_conf),
     memory_limit    => $memory_limit,
+    cpu_shares      => $cpu_shares,
     net             => $net,
     ports           => any2array($ports),
     labels          => any2array($labels),

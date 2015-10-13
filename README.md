@@ -1,6 +1,6 @@
 Puppet module for installing, configuring and managing
 [Docker](https://github.com/docker/docker) from the [official repository](http://docs.docker.com/installation/) or alternatively from [EPEL on RedHat](http://docs.docker.io/en/latest/installation/rhel/) based distributions.
- 
+
 [![Puppet
 Forge](http://img.shields.io/puppetforge/v/garethr/docker.svg)](https://forge.puppetlabs.com/garethr/docker) [![Build
 Status](https://secure.travis-ci.org/garethr/garethr-docker.png)](http://travis-ci.org/garethr/garethr-docker) [![Documentation
@@ -233,6 +233,7 @@ docker::run { 'helloworld':
   volumes         => ['/var/lib/couchdb', '/var/log'],
   volumes_from    => '6446ea52fbc9',
   memory_limit    => '10m', # (format: '<number><unit>', where unit = b, k, m or g)
+  cpu_shares      => '512', # (format: '<number>', where number is the weight of the container)
   cpuset          => ['0', '3'],
   username        => 'example',
   hostname        => 'example.com',
