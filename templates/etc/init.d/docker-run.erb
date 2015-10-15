@@ -89,6 +89,11 @@ stop() {
         <%= @before_stop %>
     <% end -%>
     $docker stop <%= @sanitised_title %>
+    sleep 2
+    if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then
+       printf "Container <%= @sanitised_title %> is still running, killing process\n"
+       docker kill <%= @sanitised_title %>
+    fi
     $docker rm <%= @sanitised_title %>
     return $?
 }
@@ -100,10 +105,17 @@ clean() {
         printf "$cidfile does not exist.\n"
     else
         cid="$(cat $cidfile)"
-	rm $cidfile
+        $docker stop $cid &>/dev/null
+        if [ "true" = "$($docker inspect --format='{{.State.Running}}' $cid)" ]; then
+               printf "Container <%= @sanitised_title %> is still running, killing process\n"
+               docker kill $cid
+               printf "container killed, restarting clean process..."
+               clean()
+        fi
         $docker rm -f $cid
         retval=$?
         return $retval
+        rm $cidfile
     fi
 }
 
