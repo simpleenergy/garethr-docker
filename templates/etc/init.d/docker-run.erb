@@ -108,13 +108,7 @@ clean() {
         printf "$cidfile does not exist.\n"
     else
         cid="$(cat $cidfile)"
-        $docker stop $cid &>/dev/null
-        if [ "true" = "$($docker inspect --format='{{.State.Running}}' $cid)" ]; then
-               printf "Container <%= @sanitised_title %> is still running, killing process\n"
-               docker kill $cid
-               printf "container killed, restarting clean process..."
-               clean()
-        fi
+        $docker stop $cid
         $docker rm -f $cid
         retval=$?
         return $retval
