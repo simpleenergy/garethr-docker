@@ -89,11 +89,14 @@ stop() {
         <%= @before_stop %>
     <% end -%>
     $docker stop <%= @sanitised_title %>
-    sleep 2
-    if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then
-       printf "Container <%= @sanitised_title %> is still running, killing process\n"
-       docker kill <%= @sanitised_title %>
-    fi
+
+    for i in {0..15}; do
+      if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then break; fi
+      sleep 2
+    done
+
+    if [ $i -eq 15 ]; then $docker kill <%= @sanitised_title %>; fi
+
     $docker rm <%= @sanitised_title %>
     return $?
 }
