@@ -88,14 +88,14 @@ stop() {
     <% if @before_stop -%>
         <%= @before_stop %>
     <% end -%>
-    $docker stop <%= @sanitised_title %>
+    $docker stop --time=30 <%= @sanitised_title %>
 
     for i in {0..15}; do
       if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then break; fi
       sleep 2
     done
 
-    if [ $i -eq 15 ]; then $docker kill <%= @sanitised_title %>; fi
+    if [ $i -eq 15 ]; then $docker kill --signal=SIGQUIT <%= @sanitised_title %>; fi
 
     $docker rm <%= @sanitised_title %>
     return $?
