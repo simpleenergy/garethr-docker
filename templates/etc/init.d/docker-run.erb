@@ -68,6 +68,7 @@ start() {
     <% if @pull_on_start -%>
         $docker pull <%= @image %>
     <% end -%>
+    <% if @use_weave %>docker="/usr/local/bin/weave"<% end %>
     $docker run \
     <%= @docker_run_flags %> \
     --name <%= @sanitised_title %> \

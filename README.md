@@ -244,6 +244,7 @@ docker::run { 'helloworld':
   privileged      => false,
   pull_on_start   => false,
   before_stop     => 'echo "So Long, and Thanks for All the Fish"',
+  use_weave       => false,
   depends         => [ 'container_a', 'postgres' ],
 }
 ```

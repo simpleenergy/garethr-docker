@@ -72,6 +72,7 @@ define docker::run(
   $hostentries = [],
   $restart = undef,
   $before_stop = false,
+  $use_weave = false,
 ) {
   include docker::params
   $docker_command = $docker::params::docker_command
