@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This file is managed by Puppet and local changes
 # may be overwritten
@@ -91,17 +91,17 @@ stop() {
     <% end -%>
     $docker stop --time=30 <%= @sanitised_title %>
 
-    c=0
-    while [ $c -le 15 ]
-    do
-      if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then break; fi
-      c=$c+1
+    for i in {0..15}; do
+      running=$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)
+
+      if [ "true" != "$running" ]; then break; fi
       sleep 2
     done
 
     if [ $i -eq 15 ]; then $docker kill --signal=SIGQUIT <%= @sanitised_title %>; fi
 
-    $docker rm <%= @sanitised_title %>
+
+  $docker rm <%= @sanitised_title %>
     return $?
 }
 
