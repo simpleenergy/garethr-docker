@@ -95,6 +95,7 @@ stop() {
     while [ $c -le 15 ]
     do
       if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then break; fi
+      c=$c+1
       sleep 2
     done
 
