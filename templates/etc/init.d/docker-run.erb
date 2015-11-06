@@ -100,8 +100,8 @@ stop() {
 
     if [ $i -eq 15 ]; then $docker kill --signal=SIGQUIT <%= @sanitised_title %>; fi
 
-
-  $docker rm <%= @sanitised_title %>
+    sleep 5
+    $docker rm <%= @sanitised_title %>
     return $?
 }
 
