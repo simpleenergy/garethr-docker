@@ -91,7 +91,9 @@ stop() {
     <% end -%>
     $docker stop --time=30 <%= @sanitised_title %>
 
-    for i in {0..15}; do
+    c=0
+    while [ $c -le 15 ]
+    do
       if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then break; fi
       sleep 2
     done
