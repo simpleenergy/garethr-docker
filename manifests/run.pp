@@ -48,6 +48,7 @@ define docker::run(
   $ensure = 'present',
   $command = undef,
   $memory_limit = '0b',
+  $cpu_shares = '0',
   $cpuset = [],
   $ports = [],
   $labels = [],
@@ -89,6 +90,7 @@ define docker::run(
   $remove_container_on_stop = true,
   $remove_volume_on_start = false,
   $remove_volume_on_stop = false,
+  $use_weave = false,
 ) {
   include docker::params
   $docker_command = $docker::params::docker_command
@@ -98,6 +100,8 @@ define docker::run(
   validate_re($title, '^[\S]*$')
   validate_re($memory_limit, '^[\d]*(b|k|m|g)$')
   validate_re($ensure, '^(present|absent)')
+  validate_re($cpu_shares, '^[\d]*$')
+
   if $restart {
     validate_re($restart, '^(no|always|on-failure)|^on-failure:[\d]+$')
   }
@@ -167,6 +171,7 @@ define docker::run(
     links           => any2array($links),
     lxc_conf        => any2array($lxc_conf),
     memory_limit    => $memory_limit,
+    cpu_shares      => $cpu_shares,
     net             => $net,
     ports           => any2array($ports),
     labels          => any2array($labels),

@@ -26,6 +26,10 @@ module Puppet::Parser::Functions
       flags << "-m #{opts['memory_limit']}"
     end
 
+    if opts['cpu_shares']
+      flags << "-c #{opts['cpu_shares']}"
+    end
+
     cpusets = [opts['cpuset']].flatten.compact
     unless cpusets.empty?
       value = cpusets.join(',')

@@ -232,6 +232,11 @@ require 'spec_helper'
       it { should contain_file(initscript).with_content(/-m 1000b/) }
     end
 
+    context 'when passing a cpu shares limit' do
+      let(:params) { {'command' => 'command', 'image' => 'base', 'cpu_shares' => '512'} }
+      it { should contain_file(initscript).with_content(/-c=512/) }
+    end
+
     context 'when passing a cpuset' do
       let(:params) { {'command' => 'command', 'image' => 'base', 'cpuset' => '3'} }
       it { should contain_file(initscript).with_content(/--cpuset=3/) }

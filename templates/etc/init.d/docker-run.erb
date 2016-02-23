@@ -67,6 +67,8 @@ fi
 start() {
     [ -x $docker ] || exit 5
 
+    <% if @use_weave %>docker="/usr/local/bin/weave"<% end %>
+
     if [ "true" = "$($docker inspect --format='{{.State.Running}}' <%= @sanitised_title %>)" ]; then
        failure
        printf "Container <%= @sanitised_title %> is still running.\n"

@@ -276,6 +276,7 @@ docker::run { 'helloworld':
   volumes         => ['/var/lib/couchdb', '/var/log'],
   volumes_from    => '6446ea52fbc9',
   memory_limit    => '10m', # (format: '<number><unit>', where unit = b, k, m or g)
+  cpu_shares      => '512', # (format: '<number>', where number is the weight of the container)
   cpuset          => ['0', '3'],
   username        => 'example',
   hostname        => 'example.com',
@@ -287,6 +288,7 @@ docker::run { 'helloworld':
   pull_on_start   => false,
   before_stop     => 'echo "So Long, and Thanks for All the Fish"',
   after           => [ 'container_b', 'mysql' ],
+  use_weave       => false,
   depends         => [ 'container_a', 'postgres' ],
 }
 ```
